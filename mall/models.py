@@ -1,3 +1,5 @@
+import random
+
 from django.db import models
 
 
@@ -17,6 +19,7 @@ class GoodsInfo(models.Model):
     goods_id = models.IntegerField(auto_created=True, primary_key=True)
     goods_name = models.CharField(max_length=200)
     goods_intro = models.CharField(max_length=200)
+    goods_category_id = models.IntegerField(default=0)
     goods_cover_img = models.CharField(max_length=200)
     goods_carousel = models.CharField(max_length=500)
     goods_detail_content = models.TextField()
@@ -25,10 +28,12 @@ class GoodsInfo(models.Model):
     stock_num = models.IntegerField()
     tag = models.CharField(max_length=20)
     goods_sell_status = models.IntegerField()
-    create_time = models.DateField(auto_now_add=True)
     create_user = models.IntegerField()
-    update_time = models.DateField(auto_now_add=True)
+    create_time = models.DateField(auto_now_add=True)
     update_user = models.IntegerField()
+    update_time = models.DateField(auto_now_add=True)
+    selling_num = models.IntegerField(default=0)
+    goods_theme_id = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'goods_info'
@@ -106,6 +111,9 @@ class GoodsCategory(models.Model):
     create_user = models.IntegerField(default=0)
     update_time = models.DateField(auto_now_add=True)
     update_user = models.IntegerField(default=0)
+    carousel_1 = models.CharField(max_length=200, default=None)
+    carousel_2 = models.CharField(max_length=200, default=None)
+    carousel_small = models.CharField(max_length=200, default=None)
 
     class Meta:
         db_table = 'goods_category'
@@ -117,6 +125,8 @@ class ShoppingCart(models.Model):
     is_deleted = models.BooleanField(default=False)
     create_time = models.DateField(auto_now_add=True)
     update_time = models.DateField(auto_now_add=True)
+    user_id = models.IntegerField(default=0)
+    goods_id = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'shopping_cart'
@@ -124,6 +134,7 @@ class ShoppingCart(models.Model):
 
 class OrderInfo(models.Model):
     order_id = models.IntegerField(auto_created=True, primary_key=True)
+    user_id = models.IntegerField(default=0)
     order_no = models.IntegerField()
     total_price = models.IntegerField(default=1)
     pay_status = models.IntegerField(default=0)
@@ -131,7 +142,7 @@ class OrderInfo(models.Model):
     pay_time = models.DateField()
     order_status = models.IntegerField(default=0)
     extra_info = models.CharField(max_length=200)
-    is_deleted = models.BooleanField(False)
+    is_deleted = models.BooleanField(default=False)
     create_time = models.DateField(auto_now_add=True)
     update_time = models.DateField(auto_now_add=True)
 
@@ -141,7 +152,9 @@ class OrderInfo(models.Model):
 
 class OrderItem(models.Model):
     order_item_id = models.IntegerField(auto_created=True, primary_key=True)
-    goods_name = models.CharField(max_length=200)
+    user_id = models.IntegerField(default=0)
+    order_id = models.IntegerField(default=0)
+    cart_item_id = models.IntegerField(default=0)
     goods_cover_img = models.CharField(max_length=200)
     selling_price = models.IntegerField(default=1)
     goods_count = models.IntegerField()
@@ -149,3 +162,13 @@ class OrderItem(models.Model):
 
     class Meta:
         db_table = 'order_item'
+
+
+class GoodsTheme(models.Model):
+    theme_id = models.IntegerField(auto_created=True, primary_key=True)
+    theme_name = models.CharField(max_length=200)
+    theme_pic = models.CharField(max_length=200)
+    theme_pic_small = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = 'goods_theme'

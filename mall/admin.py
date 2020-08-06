@@ -20,10 +20,11 @@ class BannerAdmin(admin.ModelAdmin):
 class GoodsInfoAdmin(admin.ModelAdmin):
     list_display = ['goods_id', 'goods_name', 'goods_intro', 'goods_cover_img', 'goods_carousel', 'goods_detail_content',
                     'original_price', 'selling_price', 'stock_num', 'tag', 'goods_sell_status', 'create_time',
-                    'create_user', 'update_time', 'update_user']
+                    'create_user', 'update_time', 'update_user', 'selling_num']
     fieldsets = [
         ('商品名称', {'fields': ['goods_name']}),
         ('商品介绍', {'fields': ['goods_intro']}),
+        ('分类id', {'fields': ['good_category_id']}),
         ('商品主图', {'fields': ['goods_cover_img']}),
         ('商品轮播图', {'fields': ['goods_carousel']}),
         ('商品价格', {'fields': ['original_price']}),
@@ -32,11 +33,12 @@ class GoodsInfoAdmin(admin.ModelAdmin):
         ('商品上架状态 1-下架 0-上架', {'fields': ['goods_sell_status']}),
         ('添加者主键id', {'fields': ['create_user']}),
         ('修改者主键id', {'fields': ['update_user']}),
+        ('销售数量', {'fields': ['selling_num']}),
     ]
     list_per_page = 10
 
 
-class UserAddressAdmin(admin.ModelAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ['address_id', 'name', 'tel', 'isDefault', 'province', 'city']
     fieldsets = [
         ('收货人姓名', {'fields': ['name']}),
@@ -51,4 +53,4 @@ class UserAddressAdmin(admin.ModelAdmin):
 
 admin.site.register(Banner, BannerAdmin)
 admin.site.register(GoodsInfo, GoodsInfoAdmin)
-admin.site.register(UserAddress, UserAddressAdmin)
+admin.site.register(GoodsCategory, CategoryAdmin)
